@@ -1,10 +1,16 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const geminiApiKey = process.env.GEMINI_API_KEY;
-if (!geminiApiKey || !geminiApiKey.trim()) {
-  throw new Error('GEMINI_API_KEY environment variable is required');
+let genAI;
+function getGenAI() {
+  if (!genAI) {
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    if (!geminiApiKey || !geminiApiKey.trim()) {
+      throw new Error('GEMINI_API_KEY environment variable is required. Please set it in your .env file.');
+    }
+    genAI = new GoogleGenerativeAI(geminiApiKey);
+  }
+  return genAI;
 }
-const genAI = new GoogleGenerativeAI(geminiApiKey);
 
 const SECTION_PROMPTS = {
   hero: (content) => `
@@ -102,7 +108,7 @@ export const enhanceSection = async (sectionType, content) => {
     throw new Error(`Unsupported section type: ${sectionType}. Allowed: hero, projects, about, skills`);
   }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = getGenAI().getGenerativeModel({ model: 'gemini-2.0-flash' });
   const prompt = promptBuilder(content);
 
   const result = await model.generateContent(prompt);

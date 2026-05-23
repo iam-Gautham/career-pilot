@@ -19,7 +19,7 @@ export const generateHeadline = async (portfolioData) => {
     if (!model) {
         throw new Error("AI model is not initialized due to missing API key.");
     }
-    
+
     try {
         const prompt = `
         You are an expert personal branding coach. Based on the following portfolio data, generate 5 distinct, highly optimized LinkedIn headlines. Each headline must be no longer than 120 characters. 
