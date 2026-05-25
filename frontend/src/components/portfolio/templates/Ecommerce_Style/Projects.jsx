@@ -170,7 +170,11 @@ export default function Projects() {
                   </span>
 
                   {/* Wishlist */}
-                  <button className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/80 backdrop-blur-xl flex items-center justify-center shadow-md hover:scale-110 transition">
+                  <button 
+                    aria-label="Add to wishlist"
+                    onClick={() => {/* implement wishlist toggle */}}
+                    className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/80 backdrop-blur-xl flex items-center justify-center shadow-md hover:scale-110 transition"
+                  >
 
                     <Heart
                       size={18}
