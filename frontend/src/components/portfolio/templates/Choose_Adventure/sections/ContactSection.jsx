@@ -74,8 +74,9 @@ export default function ContactSection({ data, onReset }) {
 
               <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                 <div>
-                  <label className="block text-xs text-violet-400 mb-1.5 uppercase tracking-wider">Your Name</label>
+                  <label htmlFor="ca-name" className="block text-xs text-violet-400 mb-1.5 uppercase tracking-wider">Your Name</label>
                   <input
+                    id="ca-name"
                     type="text"
                     value={form.name}
                     onChange={handleChange('name')}
@@ -86,8 +87,9 @@ export default function ContactSection({ data, onReset }) {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-violet-400 mb-1.5 uppercase tracking-wider">Email Address</label>
+                  <label htmlFor="ca-email" className="block text-xs text-violet-400 mb-1.5 uppercase tracking-wider">Email Address</label>
                   <input
+                    id="ca-email"
                     type="email"
                     value={form.email}
                     onChange={handleChange('email')}
@@ -98,8 +100,9 @@ export default function ContactSection({ data, onReset }) {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-violet-400 mb-1.5 uppercase tracking-wider">Message</label>
+                  <label htmlFor="ca-message" className="block text-xs text-violet-400 mb-1.5 uppercase tracking-wider">Message</label>
                   <textarea
+                    id="ca-message"
                     rows={4}
                     value={form.message}
                     onChange={handleChange('message')}
@@ -154,10 +157,15 @@ export default function ContactSection({ data, onReset }) {
             {Object.entries(socials).filter(([, url]) => url).map(([platform, url]) => {
               const Icon = SOCIAL_ICONS[platform];
               if (!Icon) return null;
+              const isSafeUrl = platform === 'email'
+                ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(url)
+                : /^https?:\/\//i.test(url);
+              if (!isSafeUrl) return null;
+              const href = platform === 'email' ? `mailto:${url}` : url;
               return (
                 <a
                   key={platform}
-                  href={platform === 'email' ? `mailto:${url}` : url}
+                  href={href}
                   target={platform !== 'email' ? '_blank' : undefined}
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-violet-800/40 hover:border-violet-500/60 bg-violet-950/30 hover:bg-violet-900/40 text-violet-300 hover:text-white transition-all text-xs"

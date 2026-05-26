@@ -28,17 +28,14 @@ const SECTIONS = {
 
 export default function ChooseAdventurePortfolio() {
   const [scene, setScene] = useState('hero');
-  const [history, setHistory] = useState([]);
 
   const navigate = useCallback((next) => {
-    if (!(next in SECTIONS)) return;
-    setHistory((prev) => [...prev, scene]);
+    if (!(next in SECTIONS) || next === scene) return;
     setScene(next);
   }, [scene]);
 
   const reset = useCallback(() => {
     setScene('hero');
-    setHistory([]);
   }, []);
 
   const renderScene = () => {
@@ -141,7 +138,8 @@ export default function ChooseAdventurePortfolio() {
               <button
                 key={s}
                 onClick={() => navigate(s)}
-                title={s}
+                aria-label={`Go to ${s}`}
+                aria-current={scene === s ? 'page' : undefined}
                 className={`w-2 h-2 rounded-full transition-colors ${scene === s ? 'bg-violet-400' : 'bg-slate-700 hover:bg-slate-500'}`}
               />
             ))}

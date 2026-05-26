@@ -12,9 +12,18 @@ export default function TestimonialsSection({ data, onChoice }) {
     { label: 'Review my projects once more', next: 'projects' },
   ];
 
-  const prev = () => setActive((p) => (p - 1 + testimonials.length) % testimonials.length);
-  const next = () => setActive((p) => (p + 1) % testimonials.length);
-  const current = testimonials[active];
+  const count = testimonials?.length ?? 0;
+  const prev = () => { if (count > 0) setActive((p) => (p - 1 + count) % count); };
+  const next = () => { if (count > 0) setActive((p) => (p + 1) % count); };
+  const current = count > 0 ? testimonials[active] : null;
+
+  if (count === 0) {
+    return (
+      <div className="min-h-screen bg-[#0f0e17] flex items-center justify-center font-mono">
+        <p className="text-slate-500 text-sm">No testimonials available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0f0e17] flex flex-col items-center justify-center px-4 py-16 font-mono relative overflow-hidden">
@@ -82,10 +91,12 @@ export default function TestimonialsSection({ data, onChoice }) {
               Prev
             </button>
             <div className="flex gap-1.5">
-              {testimonials.map((_, i) => (
+              {testimonials.map((t, i) => (
                 <button
                   key={i}
                   onClick={() => setActive(i)}
+                  aria-label={`View testimonial from ${t.name}`}
+                  aria-current={i === active ? 'true' : undefined}
                   className={`w-1.5 h-1.5 rounded-full transition-colors ${i === active ? 'bg-amber-400' : 'bg-slate-700 hover:bg-slate-500'}`}
                 />
               ))}

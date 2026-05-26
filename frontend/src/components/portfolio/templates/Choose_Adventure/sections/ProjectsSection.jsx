@@ -3,16 +3,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github, Code2, ChevronRight, ChevronLeft } from 'lucide-react';
 
 export default function ProjectsSection({ data, onChoice }) {
-  const { projects } = data;
+  const projects = data.projects ?? [];
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const active = projects[activeIndex];
+  const active = projects[activeIndex] ?? null;
 
   const choices = [
     { label: 'Read my work experience', next: 'experience' },
     { label: 'Learn about my skills', next: 'skills' },
     { label: 'Get in touch with me', next: 'contact' },
   ];
+
+  if (projects.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#0f0e17] flex items-center justify-center font-mono">
+        <p className="text-slate-500 text-sm">No projects available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0f0e17] flex flex-col items-center justify-center px-4 py-16 font-mono relative overflow-hidden">
@@ -117,10 +125,12 @@ export default function ProjectsSection({ data, onChoice }) {
               Prev
             </button>
             <div className="flex gap-1.5">
-              {projects.map((_, i) => (
+              {projects.map((p, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveIndex(i)}
+                  aria-label={`View project: ${p.title}`}
+                  aria-current={i === activeIndex ? 'true' : undefined}
                   className={`w-1.5 h-1.5 rounded-full transition-colors ${i === activeIndex ? 'bg-violet-400' : 'bg-slate-700 hover:bg-slate-500'}`}
                 />
               ))}

@@ -8,7 +8,7 @@ const fadeVariants = {
   exit: { opacity: 0, y: -12, transition: { duration: 0.25 } },
 };
 
-export default function StoryEngine({ node, onChoice, onReset, history }) {
+export default function StoryEngine({ node, onChoice, onReset, history = [] }) {
   if (!node) return null;
 
   return (
