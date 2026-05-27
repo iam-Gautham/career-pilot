@@ -1,9 +1,8 @@
-
 import React, { useRef, useMemo, useEffect, useState } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Mail, ArrowRight } from 'lucide-react';
+import TileSnappingText from './TileSnappingText';
 
-/* Magnetic button tracking logic */
 const MagneticButton = ({ children, href, disabled, className }) => {
   const ref = useRef(null);
   const rawX = useMotionValue(0);
@@ -16,24 +15,15 @@ const MagneticButton = ({ children, href, disabled, className }) => {
     const rect = ref.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    rawX.set((e.clientX - cx) * 0.25);
-    rawY.set((e.clientY - cy) * 0.25);
+    rawX.set((e.clientX - cx) * 0.2);
+    rawY.set((e.clientY - cy) * 0.2);
   };
   const handleLeave = () => { rawX.set(0); rawY.set(0); };
 
   const Tag = disabled ? motion.button : motion.a;
 
   return (
-    <Tag
-      ref={ref}
-      href={disabled ? undefined : href}
-      style={{ x, y }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      disabled={disabled || undefined}
-      aria-disabled={disabled || undefined}
-      className={className}
-    >
+    <Tag ref={ref} href={disabled ? undefined : href} style={{ x, y }} onMouseMove={handleMove} onMouseLeave={handleLeave} disabled={disabled || undefined} className={className}>
       {children}
     </Tag>
   );
@@ -51,56 +41,38 @@ const Contact = ({ socials = {} }) => {
   const headingWidth = useMemo(() => Math.max(280, Math.min(620, viewportWidth - 56)), [viewportWidth]);
 
   return (
-    <section className="py-32 px-6 max-w-3xl mx-auto text-center border-t border-slate-900">
-      <div className="mb-8 flex justify-center">
-        <motion.h2
-          className="text-5xl font-black mb-6 text-white flex flex-wrap justify-center gap-x-1"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          style={{ maxWidth: `${headingWidth}px` }}
-        >
-          Let's Build Something
-        </motion.h2>
+    <section className="py-40 px-6 max-w-4xl mx-auto text-center border-t border-slate-950 relative z-20">
+      <div className="mb-6 flex justify-center">
+        <TileSnappingText text="// Connection Terminal" className="text-xs font-mono uppercase tracking-[0.5em] text-cyan-400" baseDelay={0.1} />
       </div>
 
-      <motion.p
-        className="text-xl text-slate-300 mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        Currently open for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
-      </motion.p>
+      <div className="mb-6 flex justify-center">
+        <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight" style={{ maxWidth: `${headingWidth}px` }}>
+          <TileSnappingText text="Let's Build Something" baseDelay={0.2} />
+        </h2>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ type: 'spring', stiffness: 180, damping: 16, delay: 0.4 }}
-      >
+      <div className="text-base md:text-lg text-slate-400 max-w-xl mx-auto mb-12 leading-relaxed">
+        <TileSnappingText 
+          text="Currently open for new opportunities. Whether you have an explicit project query or just want to establish sync, let's communicate." 
+          variant="subtle" 
+          stagger={0.005} 
+          baseDelay={0.3} 
+        />
+      </div>
+
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}>
         <div className="relative inline-flex">
-          {socials.email && (
-            <motion.span
-              className="absolute inset-0 rounded-xl bg-cyan-400/20"
-              animate={{ scale: [1, 1.18, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          )}
+          {socials.email && <div className="absolute inset-0 rounded-xl bg-cyan-500/10 blur-xl animate-pulse" />}
           <MagneticButton
             href={socials.email ? `mailto:${socials.email}` : undefined}
             disabled={!socials.email}
-            className={
-              socials.email
-                ? 'inline-flex items-center gap-3 px-8 py-4 bg-cyan-500 text-slate-950 rounded-xl font-bold text-lg hover:bg-cyan-400 transition-colors duration-200 shadow-lg shadow-cyan-500/25 relative z-10'
-                : 'inline-flex items-center gap-3 px-8 py-4 bg-cyan-500/40 text-slate-950/70 rounded-xl font-bold text-lg cursor-not-allowed opacity-70 relative z-10'
-            }
+            className={`inline-flex items-center gap-3 px-8 py-4 text-sm font-mono tracking-wider uppercase rounded-lg font-bold transition-all duration-300 relative z-10 ${socials.email ? 'bg-white text-slate-950 hover:bg-slate-200' : 'bg-slate-900 text-slate-600 cursor-not-allowed border border-slate-800'}`}
           >
-            <Mail />
-            Say Hello
-            <ArrowRight size={20} />
+            <Mail size={16} />
+            {/* Snap button textual tiles */}
+            <TileSnappingText text="Say Hello" baseDelay={0.5} stagger={0.03} />
+            <ArrowRight size={16} />
           </MagneticButton>
         </div>
       </motion.div>
