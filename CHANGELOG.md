@@ -1,3 +1,10 @@
+# [1.79.0](https://github.com/anurag3407/career-pilot/compare/v1.78.4...v1.79.0) (2026-05-29)
+
+
+### Features
+
+* add spinner indicator during PDF export ([3a6b0f9](https://github.com/anurag3407/career-pilot/commit/3a6b0f94b43a2e8702571bb0ee0e30feb9585eb1))
+
 ## [1.78.4](https://github.com/anurag3407/career-pilot/compare/v1.78.3...v1.78.4) (2026-05-29)
 
 
