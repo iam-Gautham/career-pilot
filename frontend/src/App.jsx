@@ -1,5 +1,7 @@
 import StockTicker from "./components/portfolio/templates/Finance_Corporate/StockTicker";
 
+import VSCodeTheme from './components/portfolio/templates/VS_Code_Theme';
+
 import React, { useState, useEffect } from 'react';
 import Deployments from './pages/Deployments'
 import TemplateGallery from "./pages/TemplateGallery";
@@ -168,9 +170,11 @@ function AppRoutes() {
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/cookies" element={<CookiePolicy />} />
 
-        {/* Template Gallery Route (Registered at /templates) */}
-        <Route path="/templates" element={<TemplateGallery />} />
-        <Route path="/templates/chatbot" element={<ChatbotPortfolio />} />
+       {/* Template Gallery Route (Registered at /templates) */}
+<Route path="/templates" element={<TemplateGallery />} />
+<Route path="/templates/chatbot" element={<ChatbotPortfolio />} />
+
+<Route path="/vscode-theme" element={<VSCodeTheme />} /> 
         {/* Core Protected Routes */}
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
